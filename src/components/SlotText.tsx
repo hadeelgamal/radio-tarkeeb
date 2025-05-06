@@ -12,57 +12,66 @@ const REPEAT_COUNT = 10; // Number of times to repeat each character
 
 export const SlotText = ({ text, onComplete }: SlotTextProps) => {
   const reelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
+  // Container animation - runs once on mount
   useEffect(() => {
-    // Reset refs array to match text length
+    gsap.fromTo(
+      containerRef.current,
+      {
+        y: -100,
+        opacity: 0
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power3.out"
+      }
+    );
+  }, []); // Empty dependency array means this runs once
+
+  // Slot machine animation - runs once on mount
+  useEffect(() => {
     reelRefs.current = reelRefs.current.slice(0, text.length);
 
-    // Create a timeline for smooth animation
-    const tl = gsap.timeline({
-      onComplete: () => {
-        // Call onComplete callback after a small delay to ensure all animations are done
-        setTimeout(() => onComplete?.(), 100);
-      }
-    });
+    const tl = gsap.timeline();
 
-    // Animate each reel
     reelRefs.current.forEach((reelRef, index) => {
       if (!reelRef) return;
     
       const finalPosition = -((REPEAT_COUNT - 1) * CHAR_HEIGHT);
       gsap.set(reelRef, { y: 0 });
     
-      tl.to(reelRef, {
-        y: finalPosition,
-        duration: 1.5,
-        ease: "power4.inOut",
-        delay: index * 0.05,
-        onComplete: () => {
-          // Only call onComplete after the LAST letter animates
-          if (index === text.length - 1) {
-            onComplete?.();
-          }
+      tl.to(
+        reelRef,
+        {
+          y: finalPosition,
+          duration: 2.2,
+          ease: "power4.inOut",
+          delay: index * 0.05, // faster stagger
+          onComplete: () => {
+            if (index === text.length - 1) {
+              onComplete?.();
+            }
+          },
         },
-      }, index * 0.1);
+        index * 0.05
+      );
     });
-    
+
     return () => {
-      // Cleanup animations
-      reelRefs.current.forEach(ref => {
+      reelRefs.current.forEach((ref) => {
         if (ref) gsap.killTweensOf(ref);
       });
     };
-  }, [text, onComplete]);
+  }, []); // Empty dependency array means this runs once
 
   return (
-    <div className="slot-text-container tracking-[-0.1em]">
-      {text.split('').map((char, i) => (
+    <div ref={containerRef} className="slot-text-container tracking-[-0.1em]">
+      {text.split("").map((char, i) => (
         <div key={i} className="slot-column">
-          <div 
-            className="slot-reel"
-            ref={el => reelRefs.current[i] = el}
-          >
-            {/* Create array of repeated characters */}
+          <div className="slot-reel" ref={(el) => (reelRefs.current[i] = el)}>
             {Array.from({ length: REPEAT_COUNT }).map((_, j) => (
               <div key={j} className="slot-char">
                 {char}

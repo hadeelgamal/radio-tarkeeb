@@ -8,7 +8,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ title, onComplete }) => {
   return (
-    <header className="w-full min-h-[412px] bg-black flex items-center justify-center tracking-tighter">
+    <header className="w-full bg-black flex items-start justify-center">
       <SlotText text={title} onComplete={onComplete} />
     </header>
   );
