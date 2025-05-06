@@ -1,0 +1,62 @@
+.slot-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  height: 360px;
+  font-family: '29LTZeyn', sans-serif;
+  font-size: clamp(200px, 20vw, 360px);
+  font-weight: 500;
+  color: white;
+  text-transform: uppercase;
+  width: 100%;
+  line-height: 1;
+}
+
+.slot-column {
+  flex: 1;
+  height: 360px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+/* Add fade effect at top and bottom */
+.slot-column::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.5) 0%,
+    transparent 20%,
+    transparent 80%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+.slot-reel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.slot-char {
+  height: 360px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  text-align: center;
+} 

@@ -1,5 +1,5 @@
-
 import * as React from "react";
+import { SlotText } from "../SlotText";
 
 interface HeroProps {
   title: string;
@@ -7,9 +7,9 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ title }) => {
   return (
-    <header className="flex items-center justify-center min-h-[412px] w-full overflow-hidden bg-black">
-      <div className="text-[200px] sm:text-[240px] md:text-[300px] lg:text-[360px] text-white whitespace-nowrap uppercase leading-[1.2] text-center max-w-full px-4">
-        {title}
+    <header className="w-screen min-h-[412px] bg-black flex items-center justify-center">
+      <div className="w-full flex items-center justify-center">
+        <SlotText text={title} />
       </div>
     </header>
   );

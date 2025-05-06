@@ -1,0 +1,23 @@
+@font-face {
+  font-family: '29LTZeyn';
+  src: url('/fonts/alfont_com_29LTZeyn-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '29LTZeyn';
+  src: url('/fonts/alfont_com_29LTZeyn-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '29LTZeyn';
+  src: url('/fonts/alfont_com_29LTZeyn-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+} 
