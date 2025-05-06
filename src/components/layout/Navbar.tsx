@@ -1,9 +1,8 @@
-
 import * as React from "react";
 
 export const Navbar: React.FC = () => {
   return (
-    <nav className="flex items-center justify-between w-full min-h-[72px] bg-black px-6 md:px-16">
+    <nav className="flex items-center justify-between w-full min-h-[72px] bg-black px-6 md:px-16 m-0">
       <div className="text-white text-[32px] uppercase tracking-[-0.32px]">
         Radio Tarkeeb
       </div>

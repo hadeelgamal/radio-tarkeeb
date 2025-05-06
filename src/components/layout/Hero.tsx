@@ -3,14 +3,13 @@ import { SlotText } from "../SlotText";
 
 interface HeroProps {
   title: string;
+  onComplete?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ title }) => {
+export const Hero: React.FC<HeroProps> = ({ title, onComplete }) => {
   return (
-    <header className="w-screen min-h-[412px] bg-black flex items-center justify-center">
-      <div className="w-full flex items-center justify-center">
-        <SlotText text={title} />
-      </div>
+    <header className="w-full min-h-[412px] bg-black flex items-center justify-center tracking-tighter">
+      <SlotText text={title} onComplete={onComplete} />
     </header>
   );
 };
