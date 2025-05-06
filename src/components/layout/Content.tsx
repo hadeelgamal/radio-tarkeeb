@@ -7,11 +7,9 @@ interface ContentProps {
 
 export const Content: React.FC<ContentProps> = ({ text }) => {
   return (
-    <main className="items-stretch flex min-h-[594px] w-full flex-col overflow-hidden text-[40px] text-white font-light leading-[48px] justify-center bg-black px-16 py-[195px] max-md:max-w-full max-md:px-5 max-md:py-[100px]">
-      <div className="flex h-[204px] w-full justify-end max-md:max-w-full">
-        <div className="text-white w-[699px] max-w-full ml-auto mr-0">
-          {text}
-        </div>
+    <main className="flex justify-end min-h-[594px] w-full bg-black px-6 md:px-16 py-16 md:py-[120px]">
+      <div className="max-w-[700px] text-[24px] md:text-[32px] lg:text-[40px] text-white font-light leading-tight md:leading-[48px]">
+        {text}
       </div>
     </main>
   );
