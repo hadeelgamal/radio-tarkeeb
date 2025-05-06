@@ -41,10 +41,10 @@ export const Navbar: React.FC = () => {
   return (
     <nav ref={navRef} className="w-full bg-black pt-6 px-6 md:px-16 m-0 z-50">
       <div className="flex items-center justify-between min-h-[72px]">
-        <div className="text-white text-[32px] uppercase tracking-[-0.32px]">
+        <div className="text-white text-[24px] uppercase tracking-[-0.32px]">
           Radio Tarkeeb
         </div>
-        <div className="flex items-center gap-20 md:gap-24 text-[32px] uppercase">
+        <div className="flex items-center gap-24 md:gap-32 text-[24px] uppercase">
           <a href="#live" className="text-white hover:text-gray-300 transition-colors">
             Live
           </a>
