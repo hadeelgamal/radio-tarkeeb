@@ -1,11 +1,12 @@
+
 import * as React from "react";
 
 export const Navbar: React.FC = () => {
   return (
     <nav className="justify-center items-stretch flex min-h-[72px] w-full flex-col text-[32px] uppercase tracking-[-0.32px] leading-none bg-black px-16 max-md:max-w-full max-md:px-5">
       <div className="flex w-full items-center gap-[40px_100px] justify-between flex-wrap max-md:max-w-full">
-        <div className="self-stretch flex h-10 items-center text-white justify-center w-20 my-auto">
-          <div className="self-stretch w-[155px] overflow-hidden my-auto pb-[33px] px-2">
+        <div className="self-stretch flex h-10 items-center text-white justify-center my-auto">
+          <div className="self-stretch w-auto overflow-visible my-auto px-2">
             Radio Tarkeeb
           </div>
         </div>
