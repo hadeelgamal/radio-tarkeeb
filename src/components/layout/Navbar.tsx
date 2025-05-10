@@ -1,6 +1,7 @@
 import * as React from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,22 +42,22 @@ export const Navbar: React.FC = () => {
   return (
     <nav ref={navRef} className="w-full bg-black pt-6 px-6 md:px-16 m-0 z-50">
       <div className="flex items-center justify-between min-h-[72px]">
-        <div className="text-white text-[24px] uppercase tracking-[-0.32px]">
+        <Link to="/" className="text-white text-[24px] uppercase tracking-[-0.32px]">
           Radio Tarkeeb
-        </div>
+        </Link>
         <div className="flex items-center gap-24 md:gap-32 text-[24px] uppercase">
-          <a href="#live" className="text-white hover:text-gray-300 transition-colors">
+          <Link to="/live" className="text-white hover:text-gray-300 transition-colors">
             Live
-          </a>
-          <a href="#playback" className="text-white hover:text-gray-300 transition-colors">
+          </Link>
+          <Link to="/playback" className="text-white hover:text-gray-300 transition-colors">
             Playback
-          </a>
-          <a href="#about" className="text-white hover:text-gray-300 transition-colors">
+          </Link>
+          <Link to="/about" className="text-white hover:text-gray-300 transition-colors">
             About
-          </a>
-          <a href="#contact" className="text-white hover:text-gray-300 transition-colors">
+          </Link>
+          <Link to="/contact" className="text-white hover:text-gray-300 transition-colors">
             Contact
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

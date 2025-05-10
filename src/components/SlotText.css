@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   width: 100vw;
-  font-family: '29LTZeyn', sans-serif;
+  font-family: 'Cairo', sans-serif;
   font-size: clamp(120px, 25vw, 300px);
   font-weight: 500;
   color: white;

@@ -52,6 +52,7 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     --font-29ltzeyn: '29LTZeyn', sans-serif;
+    --font-cairo: 'Cairo', sans-serif;
   }
 
   .dark {
@@ -100,6 +101,6 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-29ltzeyn);
+    font-family: var(--font-cairo);
   }
 }

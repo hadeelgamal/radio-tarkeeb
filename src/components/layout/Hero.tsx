@@ -1,9 +1,6 @@
 import * as React from "react";
 import { SlotText } from "../SlotText";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface HeroProps {
   title: string;
@@ -14,25 +11,20 @@ export const Hero: React.FC<HeroProps> = ({ title, onComplete }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(containerRef.current, {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-        opacity: 0,
-        ease: "none"
-      });
-    }, containerRef);
+    // Set a timeout to call onComplete after the animation
+    const timeout = setTimeout(() => {
+      onComplete?.();
+    }, 3000); // Wait 3 seconds for the animation to complete
 
-    return () => ctx.revert();
-  }, []);
+    return () => clearTimeout(timeout);
+  }, [onComplete]);
 
   return (
-    <header ref={containerRef} className="w-full bg-black flex items-start justify-center">
-      <SlotText text={title} onComplete={onComplete} />
+    <header 
+      ref={containerRef} 
+      className="fixed inset-0 w-full h-full bg-black flex items-center justify-center z-50"
+    >
+      <SlotText text={title} />
     </header>
   );
 };
