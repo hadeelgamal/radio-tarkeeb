@@ -8,17 +8,19 @@ interface SplashScreenProps {
 }
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
+  const logoWrapperRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
-    const elements = logoRef.current?.querySelectorAll('*');
+    const elements = logoWrapperRef.current?.querySelectorAll('*');
     if (!elements) return;
 
-    const tl = gsap.timeline({ onComplete });
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      onComplete
+    });
 
     // 1. Set initial scattered state
     gsap.set(elements, {
@@ -37,7 +39,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
       ease: 'power3.out',
     });
 
-    // 3. Glitch effect: rapid displacements
+    // 3. Glitch effect
     tl.to(
       elements,
       {
@@ -48,34 +50,66 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
         duration: 0.05,
         ease: 'rough({strength: 1, points: 20, template: none, taper: none, randomize: true})',
       },
-      '+=0.2' // wait a bit after settle
+      '+=0.2'
     );
 
-    // 4. Fade out the whole splash screen container
-    tl.to(containerRef.current, {
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power2.inOut',
-      onStart: () => {
-        if (audioRef.current) {
-          gsap.to(audioRef.current, {
-            volume: 0,
-            duration: 0.8,
-            onComplete: () => {
-              audioRef.current?.pause();
-              audioRef.current = null;
-            }
-          });
-        }
-      }
-    }, '+=0.1');
+    // 4. Reset position after glitch
+    tl.to(elements, {
+      x: 0,
+      y: 0,
+      duration: 0.3,
+    });
 
-    // Cleanup
+    // 5. Calculate and animate to final position
+    tl.add(() => {
+      const splashEl = logoWrapperRef.current;
+      const targetEl = document.getElementById('navbar-logo');
+      if (!splashEl || !targetEl) return;
+
+      const splashBox = splashEl.getBoundingClientRect();
+      const targetBox = targetEl.getBoundingClientRect();
+
+      const dx = targetBox.left - splashBox.left;
+      const dy = targetBox.top - splashBox.top;
+      const scaleX = targetBox.width / splashBox.width;
+      const scaleY = targetBox.height / splashBox.height;
+      const scale = Math.min(scaleX, scaleY); // uniform scale
+
+      // Set splashEl to absolute for smooth transform
+      splashEl.style.position = 'absolute';
+      splashEl.style.top = '0';
+      splashEl.style.left = '0';
+      splashEl.style.transformOrigin = 'top left';
+
+      gsap.to(splashEl, {
+        x: dx,
+        y: dy,
+        scale,
+        duration: 1,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          if (audioRef.current) {
+            gsap.to(audioRef.current, {
+              volume: 0,
+              duration: 0.8,
+              onComplete: () => {
+                audioRef.current?.pause();
+                audioRef.current = null;
+              }
+            });
+          }
+          splashEl.style.display = 'none';
+          onComplete();
+        },
+      });
+    }, "+=0.1");
+
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
       }
+      tl.kill();
     };
   }, [onComplete]);
 
@@ -102,38 +136,34 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
     }
     
     if (audioRef.current) {
-      console.log('Toggling mute, current state:', audioRef.current.muted);
       audioRef.current.muted = !audioRef.current.muted;
       setIsMuted(!isMuted);
-      console.log('New mute state:', audioRef.current.muted);
     }
   };
 
   return (
     <div 
       className="fixed inset-0 w-screen h-screen bg-black flex items-center justify-center" 
-      ref={containerRef}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 9999
-      }}
+      style={{ zIndex: 9999 }}
     >
-      <div ref={logoRef}>
-        <LogoSvg className="w-screen h-auto px-8" />
+      <div
+        ref={logoWrapperRef}
+        className="absolute"
+        style={{
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '100vw',
+          height: 'auto',
+          transition: 'all 0.3s ease-in-out'
+        }}
+      >
+        <LogoSvg className="w-full h-auto [&>path]:fill-white" />
       </div>
       <button
         onClick={toggleMute}
-        className="fixed bottom-8 right-8 bg-black/50 p-4 rounded-full text-white hover:text-white/80 transition-colors z-[10000]"
-        style={{
-          position: 'fixed',
-          bottom: '2rem',
-          right: '2rem',
-          zIndex: 10000
-        }}
+        className="fixed bottom-8 right-8 bg-black/50 p-4 rounded-full text-white hover:text-white/80 transition-colors"
+        style={{ zIndex: 10000 }}
         aria-label={isMuted ? "Unmute" : "Mute"}
       >
         {isMuted ? (

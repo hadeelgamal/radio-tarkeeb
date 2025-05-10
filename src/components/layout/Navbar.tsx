@@ -6,7 +6,11 @@ import LogoSvg from "../../assets/logo-01.svg?react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  showLogo?: boolean;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ showLogo = true }) => {
   const navRef = React.useRef<HTMLElement>(null);
 
   React.useEffect(() => {
@@ -43,9 +47,9 @@ export const Navbar: React.FC = () => {
   return (
     <nav ref={navRef} className="w-full bg-black pt-6 px-6 md:px-16 m-0 z-50">
       <div className="flex items-center justify-between min-h-[72px]">
-        <Link to="/" className="h-12 w-auto">
-          <LogoSvg className="h-full w-auto [&>path]:fill-white" />
-        </Link>
+        <div id="navbar-logo" className="h-12 w-[93.039px] relative overflow-hidden">
+          {showLogo && <LogoSvg className="h-full w-auto [&>path]:fill-white" />}
+        </div>
         <div className="flex items-center gap-24 md:gap-32 text-[24px] uppercase">
           <Link to="/live" className="text-white hover:text-gray-300 transition-colors">
             Live
