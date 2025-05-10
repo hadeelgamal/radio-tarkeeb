@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 import LogoSvg from "../../assets/logo-01.svg?react";
+import { GlitchEffect } from '../ui/GlitchEffect';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,9 +49,11 @@ export const Navbar: React.FC<NavbarProps> = ({ showLogo = true }) => {
     <nav ref={navRef} className="w-full bg-black pt-6 px-6 md:px-16 m-0 z-50">
       <div className="flex items-center justify-between min-h-[72px]">
         <div id="navbar-logo" className="h-12 w-[93.039px] relative overflow-hidden">
-          {showLogo && <LogoSvg className="h-full w-auto [&>path]:fill-white" />}
+          <GlitchEffect>
+            {showLogo && <LogoSvg className="h-full w-auto [&>path]:fill-white" />}
+          </GlitchEffect>
         </div>
-        <div className="flex items-center gap-24 md:gap-32 text-[24px] uppercase">
+        <div className="flex items-center gap-24 md:gap-32 text-[16px] uppercase">
           <Link to="/live" className="text-white hover:text-gray-300 transition-colors">
             Live
           </Link>

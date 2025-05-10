@@ -220,7 +220,7 @@ export const RadioControls: React.FC = () => {
       </div>
 
       {/* Red lamp indicator */}
-      <div className="absolute top-[150px] left-1/2 -translate-x-1/2 flex items-center gap-2">
+      <div className="absolute top-[160px] left-1/2 -translate-x-1/2 flex items-center gap-2">
         <div 
           className={`w-3 h-3 rounded-full transition-all duration-300 ${
             isInitialized 
