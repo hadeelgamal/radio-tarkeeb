@@ -1,6 +1,5 @@
 import * as React from "react";
 import { gsap } from "gsap";
-import { SlotCTA } from "../SlotCTA";
 
 interface ContentProps {
   text: string;
@@ -136,16 +135,6 @@ export const Content: React.FC<ContentProps> = ({ text }) => {
             mixBlendMode: 'multiply'
           }}
         />
-        <div className="absolute right-[320px] top-1/2 -translate-y-1/2 flex flex-col gap-1">
-          <SlotCTA 
-            text="Listen Live"
-            onClick={() => console.log('Listen Live clicked')}
-          />
-          <SlotCTA 
-            text="Playback"
-            onClick={() => console.log('Playback clicked')}
-          />
-        </div>
       </div>
     </main>
   );

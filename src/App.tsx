@@ -7,14 +7,11 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Live from "./pages/Live";
 import NotFound from "./pages/NotFound";
-import { useState } from 'react';
 import './App.css';
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [animationDone, setAnimationDone] = useState(false);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -23,12 +20,7 @@ const App = () => {
         <BrowserRouter>
           <div className="min-h-screen bg-black">
             <Routes>
-              <Route path="/" element={
-                <Index 
-                  animationDone={animationDone}
-                  onAnimationComplete={() => setAnimationDone(true)}
-                />
-              } />
+              <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/live" element={<Live />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
