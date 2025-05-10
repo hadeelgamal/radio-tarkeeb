@@ -2,14 +2,48 @@ import * as React from "react";
 import { Meter } from "./Meter";
 import { Knob } from "./Knob";
 import staticAudio from '../assets/static.wav';
+import { DropdownMenu } from "../components/ui/DropdownMenu";
+import { GenericButton } from "../components/ui/GenericButton";
+import { VolumeSlider } from "../components/ui/VolumeSlider";
+
+interface Station {
+  label: string;
+  frequency: number;
+}
 
 export const RadioControls: React.FC = () => {
   const [rotation, setRotation] = React.useState(-165);
   const [isScrolling, setIsScrolling] = React.useState(false);
   const [isInitialized, setIsInitialized] = React.useState(false);
+  const [volume, setVolume] = React.useState(1);
   const knobRef = React.useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = React.useRef<NodeJS.Timeout>();
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
+
+  const stations: Station[] = [
+    { label: "Tarkeeb 98.5", frequency: 98.5 },
+    { label: "Studio 95.2", frequency: 95.2 },
+    { label: "Archive 102.3", frequency: 102.3 },
+  ];
+
+  const dropdownItems = [
+    {
+      label: "Latest Episodes",
+      onClick: () => console.log("Latest Episodes clicked")
+    },
+    {
+      label: "Popular Shows",
+      onClick: () => console.log("Popular Shows clicked")
+    },
+    {
+      label: "Categories",
+      onClick: () => console.log("Categories clicked")
+    },
+    {
+      label: "About Us",
+      onClick: () => console.log("About Us clicked")
+    }
+  ];
 
   // FM range and snapping
   const minFreq = 88;
@@ -21,9 +55,20 @@ export const RadioControls: React.FC = () => {
   const rawFreq = minFreq + ((rotation + 165) / maxAngle) * (maxFreq - minFreq);
   const frequency = Math.round(rawFreq / step) * step;
 
-  // Define the target frequency and tolerance
-  const targetFreq = 98.5; // Example frequency to tune into
-  const tolerance = 0.2; // ±0.2 MHz tolerance
+  // Find current station
+  const currentStation = stations.find(
+    (s) => Math.abs(s.frequency - frequency) < 0.2
+  );
+
+  // Helper to convert frequency to rotation
+  const freqToRotation = (freq: number) =>
+    ((freq - minFreq) / (maxFreq - minFreq)) * maxAngle - 165;
+
+  // Handle station change
+  const handleStationChange = (freq: number) => {
+    const snappedAngle = freqToRotation(freq);
+    setRotation(snappedAngle);
+  };
 
   // Initialize audio on component mount
   React.useEffect(() => {
@@ -47,7 +92,7 @@ export const RadioControls: React.FC = () => {
     if (!audioRef.current || !isInitialized) return;
 
     // Check if we're within the target frequency range
-    const isInRange = Math.abs(frequency - targetFreq) <= tolerance;
+    const isInRange = Math.abs(frequency - currentStation?.frequency) <= 0.2;
     console.log('Frequency:', frequency, 'In range:', isInRange);
 
     if (isInRange) {
@@ -70,7 +115,7 @@ export const RadioControls: React.FC = () => {
         });
       }
     }
-  }, [frequency, isInitialized]);
+  }, [frequency, isInitialized, currentStation]);
 
   const handleWheel = React.useCallback((e: WheelEvent) => {
     e.preventDefault();
@@ -101,7 +146,7 @@ export const RadioControls: React.FC = () => {
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
       // Snap rotation to match snapped frequency
-      const snappedAngle = ((frequency - minFreq) / (maxFreq - minFreq)) * maxAngle - 165;
+      const snappedAngle = freqToRotation(frequency);
       setRotation(snappedAngle);
     }, 100);
   }, [frequency, maxAngle, maxFreq, minFreq, step, isInitialized]);
@@ -120,43 +165,73 @@ export const RadioControls: React.FC = () => {
     };
   }, [handleWheel]);
 
+  // Handle volume changes
+  React.useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center">
-      <div className="relative w-[1000px] mt-40">
-        <div className="w-full">
-          <Meter frequency={frequency} />
-        </div>
-        
+    <>
+      <div className="w-full">
+        <Meter frequency={frequency} />
+      </div>
+      
+      <div className="absolute w-full flex justify-center">
         <div
           ref={knobRef}
-          className="absolute w-[150px] h-[150px] top-[200px] mt-10 left-1/2 cursor-pointer select-none"
+          className="w-[150px] h-[150px] top-[200px] mt-20 cursor-pointer select-none"
           style={{ 
-            transform: `translateX(-50%) rotate(${rotation + 90}deg)`,
+            transform: `rotate(${rotation + 90}deg)`,
             transformOrigin: "center center",
             transition: isScrolling ? 'none' : 'transform 0.15s ease-out'
           }}
         >
           <Knob />
         </div>
-
-        <div className="absolute top-[460px] left-1/2 -translate-x-1/2 text-white text-xl tracking-wide">
-          {frequency.toFixed(1)} MHz
-        </div>
-
-        {/* Red lamp indicator */}
-        <div className="absolute top-[500px] left-1/2 -translate-x-1/2 flex items-center gap-2">
-          <div 
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              isInitialized 
-                ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]' 
-                : 'bg-red-500/20'
-            }`}
-          />
-          <span className="text-white/60 text-sm">
-            {isInitialized ? 'ON AIR' : 'OFF'}
-          </span>
-        </div>
       </div>
-    </div>
+
+      {/* Controls Container */}
+      <div className="absolute top-[440px]  left-1/2 -translate-x-1/2 flex items-center justify-center gap-6 w-[800px]">
+        <GenericButton 
+          label="More Episode" 
+          withArrow={true}
+          onClick={() => console.log('Play now clicked')}
+        />
+        
+        <div className="w-8" /> {/* Spacer */}
+
+        <DropdownMenu
+          activeLabel={currentStation?.label ?? `${frequency.toFixed(1)} MHz`}
+          items={stations.map(station => ({
+            label: station.label,
+            onClick: () => handleStationChange(station.frequency),
+          }))}
+        />
+        
+        <div className="w-8" /> {/* Spacer */}
+        
+        <VolumeSlider
+          value={volume}
+          onChange={setVolume}
+          className="bg-black/50  rounded-full"
+        />
+      </div>
+
+      {/* Red lamp indicator */}
+      <div className="absolute top-[150px] left-1/2 -translate-x-1/2 flex items-center gap-2">
+        <div 
+          className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            isInitialized 
+              ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]' 
+              : 'bg-red-500/20'
+          }`}
+        />
+        <span className="text-white/60 text-sm">
+          {isInitialized ? 'ON AIR' : 'OFF'}
+        </span>
+      </div>
+    </>
   );
 }; 

@@ -22,7 +22,7 @@ export const GenericButton: React.FC<GenericButtonProps> = ({
 
     const tl = gsap.timeline({ paused: true });
     tl.to(arrowWrapperRef.current, {
-      x: 24, // Adjust as needed for distance
+      x: 24,
       opacity: 1,
       duration: 0.4,
       ease: 'power3.out',
