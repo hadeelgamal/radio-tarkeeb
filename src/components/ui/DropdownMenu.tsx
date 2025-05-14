@@ -13,44 +13,72 @@ interface DropdownMenuProps {
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({ 
-  activeLabel, 
+  activeLabel,
   items,
   className = ''
 }) => {
   const [open, setOpen] = useState(false);
   const [dropUp, setDropUp] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setOpen(false);
+    }, 200); // Small delay to prevent flickering
+  };
 
   useEffect(() => {
     if (open && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       const spaceBelow = window.innerHeight - rect.bottom;
-      const dropdownHeight = 200; // Approx height of your dropdown
-      setDropUp(spaceBelow < dropdownHeight);
+      const spaceAbove = rect.top;
+      const dropdownHeight = 200; // Approximate height of dropdown
+
+      // If not enough space below and more space above, flip up
+      setDropUp(spaceBelow < dropdownHeight && spaceAbove > spaceBelow);
     }
 
     if (!dropdownRef.current) return;
     gsap.to(dropdownRef.current, {
       opacity: open ? 1 : 0,
-      y: open ? 0 : -10,
+      y: open ? 0 : (dropUp ? 10 : -10),
       pointerEvents: open ? 'auto' : 'none',
-      duration: 0.25,
-      ease: 'power2.out',
+      duration: 0.3,
+      ease: "power2.inOut"
     });
-  }, [open]);
+  }, [open, dropUp]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <div className={`relative inline-block ${className}`}>
+    <div 
+      className={`relative inline-block ${className}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <button
         ref={buttonRef}
-        onClick={() => setOpen((o) => !o)}
         className={`
-          relative group border border-white rounded-full px-6 h-12 
-          text-white text-base font-medium transition-all duration-200 
+          relative group bg-white text-black rounded-full px-6 h-12 
+          text-base font-medium transition-all duration-200 
           flex items-center justify-center gap-2
-          hover:bg-white/10 active:bg-white/20
-          ${open ? 'bg-white/10' : ''}
+          hover:bg-white/90 active:bg-white/80
+          ${open ? 'bg-white/90' : ''}
         `}
       >
         <span>{activeLabel}</span>
@@ -67,9 +95,10 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       <div
         ref={dropdownRef}
         className={`
-          absolute left-0 w-48 rounded-lg bg-black text-white 
-          shadow-lg border border-white/10 opacity-0 pointer-events-none overflow-hidden
+          absolute left-0 w-48 rounded-lg bg-white text-black 
+          shadow-lg border border-black/10 opacity-0 pointer-events-none overflow-hidden
           ${dropUp ? 'bottom-[calc(100%+8px)]' : 'mt-2'}
+          max-h-[300px] overflow-y-auto
         `}
       >
         {items.map((item, idx) => (
@@ -79,7 +108,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
               item.onClick();
               setOpen(false);
             }}
-            className="block w-full text-left px-4 py-2 text-sm hover:bg-white/10 active:bg-white/20 transition-colors duration-200 ease-in-out"
+            className="block w-full text-left px-4 py-2 text-sm hover:bg-black/5 active:bg-black/10 transition-colors duration-200 ease-in-out"
           >
             {item.label}
           </button>

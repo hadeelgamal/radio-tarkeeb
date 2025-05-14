@@ -4,7 +4,7 @@ import { Knob } from "./Knob";
 import staticAudio from '../assets/static.wav';
 import { DropdownMenu } from "../components/ui/DropdownMenu";
 import { GenericButton } from "../components/ui/GenericButton";
-import { VolumeSlider } from "../components/ui/VolumeSlider";
+import { VolumeButton } from "../components/ui/VolumeButton";
 
 interface Station {
   label: string;
@@ -193,7 +193,7 @@ export const RadioControls: React.FC = () => {
       </div>
 
       {/* Controls Container */}
-      <div className="absolute top-[440px]  left-1/2 -translate-x-1/2 flex items-center justify-center gap-6 w-[800px]">
+      <div className="absolute top-[440px]  left-1/2 -translate-x-1/2 flex items-center justify-center gap-6 w-[800px] pr-24">
         <GenericButton 
           label="More Episode" 
           withArrow={true}
@@ -212,10 +212,9 @@ export const RadioControls: React.FC = () => {
         
         <div className="w-8" /> {/* Spacer */}
         
-        <VolumeSlider
+        <VolumeButton
           value={volume}
           onChange={setVolume}
-          className="bg-black/50  rounded-full"
         />
       </div>
 

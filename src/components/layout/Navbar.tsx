@@ -54,9 +54,6 @@ export const Navbar: React.FC<NavbarProps> = ({ showLogo = true }) => {
           </GlitchEffect>
         </div>
         <div className="flex items-center gap-24 md:gap-32 text-[16px] uppercase">
-          <Link to="/live" className="text-white hover:text-gray-300 transition-colors">
-            Live
-          </Link>
           <Link to="/playback" className="text-white hover:text-gray-300 transition-colors">
             Playback
           </Link>

@@ -46,7 +46,7 @@ export const GenericButton: React.FC<GenericButtonProps> = ({
     <button
       onClick={onClick}
       className={clsx(
-        'relative group border border-white rounded-full px-6 h-12 text-white text-base font-medium transition-all flex items-center justify-center',
+        'relative group bg-white text-black rounded-full px-6 h-12 text-base font-medium transition-all flex items-center justify-center hover:bg-white/90',
         className
       )}
     >
@@ -55,7 +55,7 @@ export const GenericButton: React.FC<GenericButtonProps> = ({
       {withArrow && (
         <span
           ref={arrowWrapperRef}
-          className="absolute right-[-2rem] top-[calc(50%-1px)] -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full border border-white text-white opacity-0 pointer-events-none"
+          className="absolute right-[-2rem] top-[calc(50%-1px)] -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white text-black opacity-0 pointer-events-none"
         >
           <svg
             className="w-4 h-4"
