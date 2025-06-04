@@ -1,0 +1,56 @@
+<nav class="navbar">
+  <div class="navbar-content">
+    <a href="/">
+      <img src="/logo.svg" alt="Logo" class="logo" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#playback">Playback</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+.navbar {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  font-family: 'Cairo', sans-serif;
+  padding: 0.5rem 0;
+}
+
+.navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.logo {
+  height: 40px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #fbbf24;
+}
+</style> 
