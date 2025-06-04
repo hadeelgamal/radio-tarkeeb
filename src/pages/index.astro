@@ -7,21 +7,13 @@ import VolumeControl from '../components/VolumeControl';
 import { stations } from '../data/stations';
 import { React } from 'astro/jsx-runtime';
 
-
 const stationNumbers = stations.map(s => s.freq.toFixed(1));
+const frequency = 1.0; // Default frequency
 ---
 
 <Layout>
-  <main class="min-h-screen mb-10 flex flex-col items-center justify-center bg-black text-white">
+  <main class="min-h-screen flex flex-col items-center justify-center bg-black text-white">
     <RadioPlayer client:load />
-    <div class="mt-6 flex flex-row justify-center items-center gap-20 mr-20">
-      <PillButtonWithHoverIcon /> 
-      <SmartDropdownMenu 
-        buttonLabel="Stations" 
-        items={stationNumbers} 
-        client:load
-      /> 
-      <VolumeControl client:load />
     </div>
   </main>
 </Layout>

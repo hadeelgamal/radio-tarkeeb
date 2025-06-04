@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
+import { stations } from '../data/stations';
 
 interface SmartDropdownMenuProps {
-  buttonLabel: string;
-  items: string[];
+  currentFrequency: number;
 }
 
 const getMenuPosition = (
@@ -35,11 +35,15 @@ const getMenuPosition = (
   return { top, left };
 };
 
-const SmartDropdownMenu = ({ buttonLabel, items }: SmartDropdownMenuProps) => {
+const SmartDropdownMenu = ({ currentFrequency }: SmartDropdownMenuProps) => {
   const [open, setOpen] = useState(false);
   const [menuStyle, setMenuStyle] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const nearestStation = stations.reduce((prev, curr) => {
+    return Math.abs(curr.freq - currentFrequency) < Math.abs(prev.freq - currentFrequency) ? curr : prev;
+  });
 
   useEffect(() => {
     if (open && buttonRef.current && menuRef.current) {
@@ -61,7 +65,7 @@ const SmartDropdownMenu = ({ buttonLabel, items }: SmartDropdownMenuProps) => {
         type="button"
         tabIndex={0}
       >
-        {buttonLabel}
+        {nearestStation.name} ({nearestStation.freq.toFixed(1)})
         <svg
           className={`w-4 h-4 ml-2 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
           fill="none"
@@ -78,12 +82,12 @@ const SmartDropdownMenu = ({ buttonLabel, items }: SmartDropdownMenuProps) => {
           className="absolute z-50 min-w-[160px] bg-white border border-gray-200 rounded-xl shadow-lg py-2 mt-2"
           style={{ top: menuStyle.top, left: menuStyle.left, position: 'fixed' }}
         >
-          {items.map((item, idx) => (
+          {stations.map((station) => (
             <div
-              key={idx}
-              className="px-6 py-2 hover:bg-sky-50 cursor-pointer whitespace-nowrap rounded-full transition"
+              key={station.name}
+              className={`px-6 py-2 hover:bg-sky-50 cursor-pointer whitespace-nowrap rounded-full transition ${station === nearestStation ? 'bg-sky-100' : ''}`}
             >
-              {item}
+              {station.name} ({station.freq.toFixed(1)})
             </div>
           ))}
         </div>
