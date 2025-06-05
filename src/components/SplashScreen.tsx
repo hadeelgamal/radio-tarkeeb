@@ -13,7 +13,7 @@ export default function SplashScreen() {
 
       const tl = gsap.timeline({
         onComplete: () => {
-          setTimeout(() => setShowSplash(false), 800);
+          setTimeout(() => setShowSplash(false), 700);
         }
       });
 
@@ -70,6 +70,13 @@ export default function SplashScreen() {
       <div ref={logoRef} className="z-10 w-full h-auto max-w-5xl">
       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 743 383.3" xmlSpace="preserve">
+        <style>
+          {`
+            g, path {
+              opacity: 0;
+            }
+          `}
+        </style>
 <g id="letter-r">
 	<path style={{ fill: '#FFFFFF' }} d="M724.8,316.6c11.7,4.7,17.1,13.3,18.2,25.2h-31.4c-0.9-2-1.6-4.3-2.9-6.1c-2.6-3.5-6.5-4.2-10.7-4.2
 		c-14.7,0-29.5,0-44.2,0h-4.4v-23.9c0.9,0,1.8,0,2.7,0c14.4,0,28.8,0,43.2,0c8.4,0,11.7-2.9,13-11.4h33.3
