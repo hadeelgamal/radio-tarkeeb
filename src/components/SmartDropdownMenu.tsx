@@ -85,7 +85,7 @@ const SmartDropdownMenu = ({ currentFrequency }: SmartDropdownMenuProps) => {
           {stations.map((station) => (
             <div
               key={station.name}
-              className={`px-6 py-2 hover:bg-sky-50 cursor-pointer whitespace-nowrap rounded-full transition ${station === nearestStation ? 'bg-sky-100' : ''}`}
+              className={`px-6 py-2 hover:bg-sky-50 cursor-pointer whitespace-nowrap rounded-full transition text-black ${station === nearestStation ? 'bg-sky-100' : ''}`}
             >
               {station.name} ({station.freq.toFixed(1)})
             </div>

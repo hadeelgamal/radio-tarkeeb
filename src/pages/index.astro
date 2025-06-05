@@ -1,19 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import RadioPlayer from '../components/RadioPlayer.tsx';
-import PillButtonWithHoverIcon from '../components/PillButtonWithHoverIcon.astro';
+import RadioPlayer from '../components/RadioPlayer';
+import PillButtonWithHoverIcon from '../components/PillButtonWithHoverIcon';
 import SmartDropdownMenu from '../components/SmartDropdownMenu';
 import VolumeControl from '../components/VolumeControl';
+import SplashScreen from '../components/SplashScreen';
 import { stations } from '../data/stations';
-import { React } from 'astro/jsx-runtime';
 
 const stationNumbers = stations.map(s => s.freq.toFixed(1));
 const frequency = 1.0; // Default frequency
 ---
 
-<Layout>
-  <main class="min-h-screen flex flex-col items-center justify-center bg-black text-white">
+<Layout title="Radio Tarkeeb">
+  <SplashScreen client:load />
+  <main class="relative min-h-screen flex flex-col items-center justify-center bg-black text-white">
     <RadioPlayer client:load />
-    </div>
   </main>
 </Layout>
